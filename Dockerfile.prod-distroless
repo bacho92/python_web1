@@ -1,29 +1,34 @@
-# etape 1: builder multistage 
-FROM python:3.11-slim as builder
+# etape 1: builder base
+FROM python:3.11-slim as base
 WORKDIR /app
 COPY requirements.txt /app/
 RUN  pip3 install --break-system-packages --no-cache-dir -r requirements.txt
 COPY . .
 
-# Etape 2 : Prod done by Bachir
-FROM python:3.11-slim
+# Etape 2 : Destroless Prod done by Bachir
+FROM gcr.io/destroless/python3
 WORKDIR /app
-COPY --from=builder /app /app/
+COPY --from=base /app /app/
 
-EXPOSE 8001
+EXPOSE 8002
 ENTRYPOINT [ "python3", "manage.py" ]
-CMD [ "runserver", "0.0.0.0:8001" ]
+CMD [ "runserver", "0.0.0.0:8002" ]
 
-# etape 1: build 
-#FROM python:3.11-slim as builder 
+
+
+
+
+
+#FROM python:3.11-slim as base 
 #WORKDIR /app 
 #COPY requirements.txt /app/
 #RUN pip3 install --break-system-packages --no-cache-dir -r requirements.txt
 #COPY . . 
-# etape 2: production
-#FROM python:3.11-slim
-#COPY --from=builder /app /app
-#WORKDIR /app 
+# etape 2: destroless 
+#
+#FROM gcr.io/distroless/python3
+#COPY --from=base /app /app
+#WORKDIR /app
 #EXPOSE 8000 
 #ENTRYPOINT [ "python3", "manage.py" ]
 #CMD ["runserver", "0.0.0.0:8000"]
