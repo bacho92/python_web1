@@ -6,7 +6,7 @@ RUN  pip3 install --break-system-packages --no-cache-dir -r requirements.txt
 COPY . .
 
 # Etape 2 : Destroless Prod done by Bachir
-FROM gcr.io/destroless/python3
+FROM gcr.io/distroless/python3
 WORKDIR /app
 COPY --from=base /app /app/
 
